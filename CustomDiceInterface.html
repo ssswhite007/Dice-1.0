@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Dice Interface</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #canvas {
+            width: 100vh;
+            height: 100vh;
+            background-color: #f0f0f0;
+            border-right: 2px solid #ccc;
+        }
+        #data {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .data-block {
+            flex: 1;
+            border-bottom: 2px solid #ccc;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .data-block:last-child {
+            border-bottom: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #000;
+        }
+        th, td {
+            padding: 5px;
+            text-align: center;
+        }
+        input[type="radio"], input[type="checkbox"] {
+            margin: 0 auto;
+            display: block;
+        }
+        input[type="number"] {
+            width: 50px;
+            text-align: center;
+        }
+        button {
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas">Canvas</div>
+    <div id="data">
+        <div class="data-block" id="dice-design">
+            <h3>DiceDesign</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dise</th>
+                        <th>#1</th>
+                        <th>#2</th>
+                        <th>#3</th>
+                        <th>#4</th>
+                        <th>#5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Default</td>
+                        <td><input type="radio" name="dice1" checked></td>
+                        <td><input type="radio" name="dice2" checked></td>
+                        <td><input type="radio" name="dice3" checked></td>
+                        <td><input type="radio" name="dice4" checked></td>
+                        <td><input type="radio" name="dice5" checked></td>
+                    </tr>
+                    <tr>
+                        <td>Brass</td>
+                        <td><input type="radio" name="dice1"></td>
+                        <td><input type="radio" name="dice2"></td>
+                        <td><input type="radio" name="dice3"></td>
+                        <td><input type="radio" name="dice4"></td>
+                        <td><input type="radio" name="dice5"></td>
+                    </tr>
+                    <tr>
+                        <td>Precious</td>
+                        <td><input type="radio" name="dice1"></td>
+                        <td><input type="radio" name="dice2"></td>
+                        <td><input type="radio" name="dice3"></td>
+                        <td><input type="radio" name="dice4"></td>
+                        <td><input type="radio" name="dice5"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="data-block" id="throw-result">
+            <h3>ThrowResult</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dise</th>
+						<th>#1</th>
+						<th>#2</th>
+						<th>#3</th>
+						<th>#4</th>
+						<th>#5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Result</td>
+                        <td><input type="number" min="1" max="6" value="1"></td>
+						<td><input type="number" min="1" max="6" value="2"></td>
+						<td><input type="number" min="1" max="6" value="3"></td>
+						<td><input type="number" min="1" max="6" value="4"></td>
+						<td><input type="number" min="1" max="6" value="5"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="data-block" id="hi-dice">
+            <h3>HiDice</h3>
+            <table>
+                <tr>
+                    <td>HiDice</td>
+                    <td><input type="checkbox"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="data-block" id="dice-to-house">
+            <h3>DiceToHouse</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Dise</th>
+						<th>#1</th>
+						<th>#2</th>
+						<th>#3</th>
+						<th>#4</th>
+						<th>#5</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>ToHouse</td>
+                        <td><input type="checkbox"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="checkbox"></td>
+						<td><input type="checkbox"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="data-block" id="reset-dice">
+            <h3>ResetDice</h3>
+            <table>
+                <tr>
+                    <td>ResetDice</td>
+                    <td><button>RESET</button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
