@@ -36,19 +36,21 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
         targetRotations[k].multiplyScalar(Math.PI * .5);
 */
 
-    /*let hiliteUrl = config.selectionMeshUrl || `./assets/d6_hilight.glb`
+    let hiliteUrl = config.selectionMeshUrl || `./assets/d6_hilight.glb`
     let hiliteGLB = await glbLoader.loadAsync(hiliteUrl);
     let selectionMesh = hiliteGLB.scene.children[0];
     selectionMesh.material.side = THREE.BackSide;
     selectionMesh.material.emissive.set(config.selectionEmissive || '#0f0')
     selectionMesh.material.blending = THREE.AdditiveBlending;
     selectionMesh.scale.multiplyScalar(config.selectionMeshScale || 1.1);
-    selectionMesh.position.set(0, 0, 0)*/
+    selectionMesh.position.set(0, 0, 0)
     
     /*new THREE.Mesh(new THREE.BoxGeometry(.51,.51,.51),new THREE.MeshBasicMaterial({
         color: '#0f0',
         side: THREE.BackSide
     }))*/
+
+
 
     let rrng = (mmin=0, mmax=1) => (Math.random() * (mmax - mmin)) + mmin
 
@@ -59,18 +61,18 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
         diceModel: die,
         config
     })
-    /*let cdice = cannonDice.diceArray;
-    cdice.forEach(d => {
-        //console.log(d)
-        d.selectionMesh = selectionMesh.clone();
-        d.mesh.add(d.selectionMesh);
-        d.selectionMesh.dice = d;
-        d.selectionMesh.visible = false;
-        d.state = 'stop';
-    }
-    )*/
+
+    let cdice = cannonDice.diceArray;
+    // cdice.forEach(d => {
+    //     d.selectionMesh = selectionMesh.clone();
+    //     d.mesh.add(d.selectionMesh);
+    //     d.selectionMesh.dice = d;
+    //     d.selectionMesh.visible = false;
+    //     d.state = 'stop';
+    // }
+    // )
     
-    async function ChangeDesign (diceModels, cubeId, modelId) {
+    async function ChangeDesign(diceModels, cubeId, modelId) {
         //let diceUrlNew = "./assets/d6.glb"
         let diceUrlNew = diceModels[modelId]
         let diceGLBNew = await glbLoader.loadAsync(diceUrlNew);
@@ -91,19 +93,16 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
                 }
             }
         });
-
-
-        
+    
+    
         // Reapply lighting settings if necessary
         directionalLight.position.set(1.5, 5, 1.5); // Example position
         directionalLight.castShadow = true; // Ensure it casts shadows
-
+    
         ambientLight.intensity = 1.5; // Example intensity
-
     
         // Re-render the scene
         renderer.render(scene, camera);
-
     }
     
 
@@ -120,7 +119,7 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
         }
         this.add = (die) => {
             tray.push(die)
-            tray.sort((a,b)=>a.value-b.value)
+            // tray.sort((a,b)=>a.value-b.value)
             updateHand();
         }
         this.remove = (die) => {
@@ -175,20 +174,22 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
 
     let diceTray = new DiceTray()
 
-    /*let selectionMeshes = cdice.map(d => d.selectionMesh)
-    let clicked = false;*/
+
+    let clicked = false;
 
     let toggleDiceHold = (die) => {
+
         //o.object.dice.body.mass = held?0:1;
         //o.object.dice.body.collisionResponse = held?false:true;
-        if (!die.held) {
-            if (diceTray.tray.length > 4)
-                return;
-        }
+        // if (!die.held) {
+        //     if (diceTray.tray.length > 4)
+        //         return;
+        // }
         die.held = !die.held;
-        die.selectionMesh.visible = die.held;
+        // die.selectionMesh.visible = die.held;
         config.refuelRenderer();
         if (die.held) {
+            console.log("toggleDiceHold add", die);
             die.startPosition = die.mesh.position.clone();
             die.startQuaternion = die.mesh.quaternion.clone();
             die.endPosition = die.mesh.position.clone();
@@ -220,8 +221,10 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
             //die.startQuaternion.clone();
             die.startScale.copy( die.baseScale );
             die.endScale.copy( die.baseScale );
+            console.log("toggleDiceHold add", die);
             diceTray.add(die);
         } else {
+            console.log("toggleDiceHold remove", die);
             diceTray.remove(die)
         }
         diceTray.update()
@@ -254,23 +257,32 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
     let throwEnd = new THREE.Vector3();
     let inThrow = false;
     let pdown = (e) => {
+        // cdice.forEach(d => {
+        //     d.selectionMesh = selectionMesh.clone();
+        //     d.mesh.add(d.selectionMesh);
+        //     d.selectionMesh.dice = d;
+        //     d.selectionMesh.visible = false;
+        //     d.state = 'stop';
+        // }
+        // )
+        let selectionMeshes = cdice.map(d => d.selectionMesh)
         throwStart.set(e.x, e.y, 0);
         throwEnd.copy(throwStart);
        
         updateDebug( e,tmp0 )
         config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerdown'}))
-        //raycasting.onPointerMove(e)
-        /*let hits = raycasting.raycaster.intersectObjects(selectionMeshes)
-        let o = hits[0]
-        clickedDie = null;
-        inThrow = false;
-        if (o) {
-            let die = o.object.dice;
-            clickedDie = die;
-            config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerdown DIE CLICKED'}))
-        }else
-            config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerdown no hit'}))
-        */
+        raycasting.onPointerMove(e)
+        // let hits = raycasting.raycaster.intersectObjects(selectionMeshes)
+        // let o = hits[0]
+        // clickedDie = null;
+        // inThrow = false;
+        // if (o) {
+        //     let die = o.object.dice;
+        //     clickedDie = die;
+        //     config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerdown DIE CLICKED'}))
+        // }else
+        //     config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerdown no hit'}))
+
     }
     
     let pmove = (e) => {
@@ -283,27 +295,6 @@ export async function SimpleDice({THREE, renderer, scene, camera, raycasting, gl
         if(checkForThrow()){
             inThrow = true;
         }
-    }
-
-    let pup = (e) => {
-        if(inThrow)
-            return;
-
-        updateDebug(e, tmp1 )
-        
-        //if(checkForThrow())
-        //    return;
-                    
-        /*let hits = raycasting.raycaster.intersectObjects(selectionMeshes)
-        let o = hits[0]
-        config.debugClicks && document.dispatchEvent(new CustomEvent('popmsg',{detail:'got pointerUp'}))
-        if (o) {
-            let die = o.object.dice;
-            if (die === clickedDie){
-                config.ontogglehold && config.ontogglehold(die,cannonDice.diceArray.indexOf(die));
-                    toggleDiceHold(die)
-            }
-        }*/
     }
 
     let rollClicked;
@@ -394,7 +385,7 @@ let throwIndicator = new ThrowIndicator({THREE,scene,config});
     window.addEventListener("resize", () => diceTray.update());
 
     renderer.domElement.addEventListener('pointermove', pmove);
-    renderer.domElement.addEventListener('pointerup', pup);
+    // renderer.domElement.addEventListener('pointerup', pup);
     renderer.domElement.addEventListener('pointerdown', pdown);
 
     document.addEventListener('keydown', e => {

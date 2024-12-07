@@ -98,30 +98,21 @@ export function CannonDice({renderer, scene, camera, diceModel, config}) {
             simulation.addBody(body);
 
             let mesh;
-            if ((i === 0) || (config.debugWalls)) {
+            if ((i === 0)) {
 
                 mesh = new THREE.Mesh(new THREE.PlaneGeometry(100,100,100,100),new THREE.MeshStandardMaterial({
                     // opacity: .1,
                     //color:'#800',
-                    //   side:THREE.DoubleSide,
-                    roughness: config.floorRoughness || .9,
-                    metalness: config.floorMetalness || 0,
-                    map: new THREE.TextureLoader().load(config.floorTexture || './assets/paper2.jpg'),
-                    //roughnessMap: new THREE.TextureLoader().load(config.floorRoughnessMap || './assets/countertop1_R.png'),
-                    //normalMap: new THREE.TextureLoader().load(config.floorNormalMap || './assets/vinyl-tablecloth-n.png')
-                }))
-                mesh.material.map.colorSpace = 'srgb'
-                if (i) {
-                    mesh.material.color = 'red'
-                    mesh.material.transparent = true;
-                    mesh.material.opacity = .25;
-
-                }
-                let repeat = config.floorRepeat || 12;
-                mesh.material.map.repeat.set(repeat, repeat)
-                mesh.material.map.wrapS = mesh.material.map.wrapT = THREE.RepeatWrapping;
-                scene.add(mesh);
-                mesh.receiveShadow = true;
+                     roughness:config.floorRoughness || .9,
+                     metalnesss:config.floorMetalness || 0,
+                     map:new THREE.TextureLoader().load(config.floorTexture || './assets/paper2.jpg')
+                 }))
+                 mesh.material.map.colorSpace = 'srgb'
+                 let repeat = config.floorRepeat || 4;
+                 mesh.material.map.repeat.set(repeat,repeat)
+                 mesh.material.map.wrapS=mesh.material.map.wrapT= THREE.RepeatWrapping;
+                 scene.add(mesh);
+                 mesh.receiveShadow = true;
 
             }
 
@@ -358,12 +349,11 @@ export function CannonDice({renderer, scene, camera, diceModel, config}) {
                 }
             }
         } else {
-            /*
-            physicsRender.fixedStep(undefined,10);
-            for (const dice of diceArray) {
-                dice.mesh.position.copy(dice.body[0].position)
-                dice.mesh.quaternion.copy(dice.body[0].quaternion)
-            }*/
+            // physicsRender.fixedStep(undefined,10);
+            // for (const dice of diceArray) {
+            //     dice.mesh.position.copy(dice.body[0].position)
+            //     dice.mesh.quaternion.copy(dice.body[0].quaternion)
+            // }
             let rb = recorder.buffer;
             let frameSize = diceArray.length * 7;
             let frame = recorder.playTime / (1 / 60);

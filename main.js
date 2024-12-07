@@ -3,6 +3,7 @@ import config from "./config.js";
 import { Renderer } from "./renderer.js";
 
 let currentRound = 0;
+let throwResult = [1, 2, 3, 4, 5];
 //import {ThreeFace} from "./comnub/three-face.js"
 import { broadcastData } from "./comnub/index.js";
 import { SimpleDice } from "./simple-dice.js";
@@ -121,8 +122,9 @@ config.onrollsimulated = () => {
   triggers.rollSimulated = true;
   if (triggers.isLocalThrower) {
     let values = simpleDice.cannonDice.diceArray.map((d) => d.value);
-    config.desiredResult = values;
-    console.log("sending values:", values);
+    // config.desiredResult = values;
+    config.desiredResult = throwResult;
+    console.log("sending values:", simpleDice.cannonDice.diceArray);
     let { throwDirection, throwStrength } = simpleDice.cannonDice;
     broadcastData({
       type: "throw",
@@ -222,6 +224,7 @@ var SettingMode = (function () {
     $("#settingsButton").click(function () {
       $("#settingsMenu").toggle();
     });
+
     document.querySelectorAll('input[type="radio"]').forEach((radio) => {
       radio.addEventListener("change", function () {
         let model = getSelectedDiceModel();
@@ -232,6 +235,24 @@ var SettingMode = (function () {
           model.dice4,
           model.dice5
         );
+      });
+    });
+
+    document.querySelectorAll('#throw-result input[type="number"]').forEach((input) => {
+      input.addEventListener('change', function () {
+        throwResult = Array.from(document.querySelectorAll('#throw-result input[type="number"]')).map(input => parseInt(input.value, 10));
+      });
+    });
+
+    document.querySelectorAll('input[name="hi-dice"]').forEach((input) => {
+      input.addEventListener('change', function () {
+        config.debugClicks = input.checked;
+      });
+    });
+
+    document.querySelectorAll('#dice-to-house input[type="checkbox"]').forEach((input) => {
+      input.addEventListener('change', function () {
+        simpleDice.toggleDiceHold(simpleDice.cannonDice.diceArray[input.value]);
       });
     });
   };

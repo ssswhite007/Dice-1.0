@@ -30,7 +30,7 @@ export function Renderer(config) {
     else
         camera.position.set(0, 10, .5);
 
-    let directionalLight = new THREE.DirectionalLight('white',2);
+    let directionalLight = new THREE.DirectionalLight('rgb(245,212,55)',0.5);
     scene.add(directionalLight);
     directionalLight.shadow.camera.left *= 5;
     directionalLight.shadow.camera.right *= 5;
@@ -39,10 +39,10 @@ export function Renderer(config) {
     directionalLight.shadow.camera.updateProjectionMatrix();
     directionalLight.shadow.bias = -.001;
 
-    directionalLight.position.set(1.5, 5, 1.5);
     directionalLight.castShadow = true;
+    directionalLight.position.set(1.5, 5, 1.5);
 
-    let ambientLight = new THREE.AmbientLight('white',1.5);
+    let ambientLight = new THREE.AmbientLight('white',1);
     scene.add(ambientLight);
 
 
@@ -58,7 +58,7 @@ export function Renderer(config) {
     controls.enableDamping = true;
     let events = {}
 
-    let postProcessing;// = new PostProcessing(renderer,scene,camera,config)
+    let postProcessing = new PostProcessing(renderer,scene,camera,config)
 
     let renderGas = 0;
     config.refuelRenderer=(seconds=2)=>{
