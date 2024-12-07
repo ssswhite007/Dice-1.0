@@ -76,7 +76,6 @@ body {
     width: 100pt; /* Width and height are equal to make squares */
     height: 100pt; /* Same as width to ensure square spots */
 
-    border: 2px dotted #000; /* Dotted outline */
     margin: 0 5px;
     background-color: #00000000; /* Transparent background */
     pointer-events:none;
